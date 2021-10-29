@@ -5,6 +5,8 @@
  */
 package dao;
 
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import modelos.Libro;
 
@@ -13,6 +15,11 @@ import modelos.Libro;
  * @author Duran
  */
 public class DLibro {
+    private Conexion conex = new Conexion();
+    private PreparedStatement verLibros;
+    private PreparedStatement insertarLibro;
+    private PreparedStatement editarLibro;
+    private PreparedStatement eliminarLibro;
     private ArrayList<Libro> listaLibro = new ArrayList();
 
     public DLibro() {
