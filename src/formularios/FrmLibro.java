@@ -15,12 +15,14 @@ import javax.swing.JOptionPane;
 public class FrmLibro extends javax.swing.JFrame {
     private DLibro libros = new DLibro();
     private boolean esNuevo=true;
+    private int posActual = 0;
 
     /**
      * Creates new form FrmLibro
      */
     public FrmLibro() {
         initComponents();
+        mostrarRegEnTf(posActual);
     }
 
     /**
@@ -35,7 +37,7 @@ public class FrmLibro extends javax.swing.JFrame {
         jToolBar2 = new javax.swing.JToolBar();
         BtnNuevo = new javax.swing.JButton();
         BtnGuardar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        BtnEliminar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         BtnAnterior = new javax.swing.JButton();
         LblRegistros = new javax.swing.JLabel();
@@ -81,12 +83,17 @@ public class FrmLibro extends javax.swing.JFrame {
         });
         jToolBar2.add(BtnGuardar);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/formularios/iconos/Eliminar.png"))); // NOI18N
-        jButton1.setText("Eliminar");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton1);
+        BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/formularios/iconos/Eliminar.png"))); // NOI18N
+        BtnEliminar.setText("Eliminar");
+        BtnEliminar.setFocusable(false);
+        BtnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        BtnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEliminarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(BtnEliminar);
         jToolBar2.add(jSeparator1);
 
         BtnAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/formularios/iconos/anterior.png"))); // NOI18N
@@ -94,6 +101,11 @@ public class FrmLibro extends javax.swing.JFrame {
         BtnAnterior.setFocusable(false);
         BtnAnterior.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BtnAnterior.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BtnAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAnteriorActionPerformed(evt);
+            }
+        });
         jToolBar2.add(BtnAnterior);
 
         LblRegistros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -105,6 +117,11 @@ public class FrmLibro extends javax.swing.JFrame {
         BtnSiguiente.setFocusable(false);
         BtnSiguiente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BtnSiguiente.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BtnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSiguienteActionPerformed(evt);
+            }
+        });
         jToolBar2.add(BtnSiguiente);
         jToolBar2.add(jSeparator2);
 
@@ -113,6 +130,11 @@ public class FrmLibro extends javax.swing.JFrame {
         BtnActualizarBD.setFocusable(false);
         BtnActualizarBD.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BtnActualizarBD.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BtnActualizarBD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnActualizarBDActionPerformed(evt);
+            }
+        });
         jToolBar2.add(BtnActualizarBD);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 255)), "Datos de Libro"));
@@ -190,14 +212,19 @@ public class FrmLibro extends javax.swing.JFrame {
 
     private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
         // TODO add your handling code here:
+        limpiarTF();
+        esNuevo = true;
+        
+    }//GEN-LAST:event_BtnNuevoActionPerformed
+
+    private void limpiarTF(){
         TfCodigo.setText("");
         TfTitulo.setText("");
         TfEdicion.setText(null);
         TfCopyright.setText(null);
         TfCodigo.requestFocus();
-        
-    }//GEN-LAST:event_BtnNuevoActionPerformed
-
+    }
+    
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
         // TODO add your handling code here:
         if(TfCodigo.getText().equals("")){
@@ -214,27 +241,88 @@ public class FrmLibro extends javax.swing.JFrame {
         } 
         int b = 0;
         if(esNuevo){
+            
             b = libros.agregarLibro(TfCodigo.getText(), 
                     TfTitulo.getText(), 
                     Integer.parseInt(TfEdicion.getText()), 
                     TfCopyright.getText());
         }else{
+            
             b = libros.editarLibro(TfCodigo.getText(), 
                     TfTitulo.getText(), 
                     Integer.parseInt(TfEdicion.getText()), 
                     TfCopyright.getText());
         }
-        
+       
         if (b == 1){
             JOptionPane.showMessageDialog(this, "Registro guardado...",
                     "Libros", JOptionPane.INFORMATION_MESSAGE);
+            posActual = libros.getListaLibro().size();
+            this.mostrarRegEnTf(posActual-1);
         }else{
             JOptionPane.showMessageDialog(this, "Error al guardar registro",
                     "Libros", JOptionPane.ERROR_MESSAGE);
         }
-            
+        
+        
     }//GEN-LAST:event_BtnGuardarActionPerformed
 
+    private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
+        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar el registro de "  +
+        this.TfTitulo.getText() + "?", "Libro", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(resp == 0){
+            int b = libros.eliminarLibro(this.TfCodigo.getText());
+            if(b == 1){
+                JOptionPane.showMessageDialog(this, "El registro se elimino satisfactoriamente",
+                        "Libro", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(this, "Surgio un error al eliminar, "
+                        + "por favor verifique si los datos proporcionado son correctos", "Libro",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_BtnEliminarActionPerformed
+
+    private void BtnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAnteriorActionPerformed
+        // TODO add your handling code here:
+        if(posActual == 0) posActual = libros.getListaLibro().size();
+        posActual--;
+        mostrarRegEnTf(posActual);
+    }//GEN-LAST:event_BtnAnteriorActionPerformed
+
+    private void BtnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSiguienteActionPerformed
+        // TODO add your handling code here:
+        posActual ++;
+        if(posActual >= libros.getListaLibro().size()) posActual  = 0;
+        this.mostrarRegEnTf(posActual);
+                
+    }//GEN-LAST:event_BtnSiguienteActionPerformed
+
+    private void BtnActualizarBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnActualizarBDActionPerformed
+        // TODO add your handling code here:
+        String msn = libros.actualizarBD();
+        JOptionPane.showMessageDialog(this, msn, "Actualizar BD", JOptionPane.INFORMATION_MESSAGE);
+        posActual  =0;
+        mostrarRegEnTf(posActual);
+    }//GEN-LAST:event_BtnActualizarBDActionPerformed
+
+    private void mostrarRegEnTf(int fila){
+        if(!libros.getListaLibro().isEmpty()){
+            TfCodigo.setText(libros.getListaLibro().get(fila).getIsbn());
+            TfTitulo.setText(libros.getListaLibro().get(fila).getTitulo());
+            TfEdicion.setText(""+ libros.getListaLibro().get(fila).getEdicion());
+            TfCopyright.setText(libros.getListaLibro().get(fila).getCopyright());
+            esNuevo = false;
+            
+            int ultReg = libros.getListaLibro().size();
+            LblRegistros.setText("" + (fila +1)+ " de " + ultReg);
+            TfCodigo.requestFocus();
+        }else{
+            limpiarTF();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -273,6 +361,7 @@ public class FrmLibro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnActualizarBD;
     private javax.swing.JButton BtnAnterior;
+    private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JButton BtnSiguiente;
@@ -281,7 +370,6 @@ public class FrmLibro extends javax.swing.JFrame {
     private javax.swing.JTextField TfCopyright;
     private javax.swing.JTextField TfEdicion;
     private javax.swing.JTextField TfTitulo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

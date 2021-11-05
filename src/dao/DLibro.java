@@ -33,9 +33,9 @@ public final class DLibro {
             conn = conexion.obtenerConexion();
             verLibros = conn.prepareStatement("Select * from Libro");
             insertarLibro = conn.prepareStatement("Insert Into Libro(isbn,"
-                    + " titulo, edicion, copyright) Values(?, ?, ?, ?)");
+                    + " titulo, numeroEdicion, copyright) Values(?, ?, ?, ?)");
             editarLibro = conn.prepareStatement("Update Libro set titulo = ?,"
-                    + " edicion = ?, copyright  = ? where isbn = ?");
+                    + " numeroEdicion = ?, copyright  = ? where isbn = ?");
             eliminarLibro = conn.prepareStatement("Delete From Libro where isbn = ?");
         } catch (SQLException ex) {
             Logger.getLogger(DLibro.class.getName()).log(Level.SEVERE, null, ex);
@@ -47,6 +47,14 @@ public final class DLibro {
         return listaLibro;
     }
     
+    /**
+     * Agrega un nuevo libro
+     * @param codigo
+     * @param titulo
+     * @param edicion
+     * @param copyright
+     * @return 
+     */
     public int agregarLibro(String codigo, String titulo, int edicion, String copyright){
         int b = 0;
         try{
@@ -68,11 +76,13 @@ public final class DLibro {
         int b = 0;
         try{          
             for(Libro lib : listaLibro){
-                if(lib.getIsbn() == codigo){
+               
+                if(lib.getIsbn().equals(codigo)){
                     lib.setTitulo(titulo);
                     lib.setEstado(edicion);
                     lib.setCopyright(copyright);
                     lib.setEstado(2);
+                    System.out.println("Encontre el registro y le cambie el estado a 2");
                     return 1;
                 }
             }
@@ -82,6 +92,11 @@ public final class DLibro {
         return b;
     }
     
+    /**
+     * Retorna si el libro fue eliminado cambia su estado a 3
+     * @param codigo
+     * @return 
+     */
     public int eliminarLibro(String codigo){
         int b = 0;
         try{
@@ -124,7 +139,7 @@ public final class DLibro {
                 listado.add(new Libro(
                         rs.getString("isbn"),
                         rs.getString("titulo"),
-                        rs.getInt("edicion"),
+                        rs.getInt("numeroEdicion"),
                         rs.getString("copyright"),
                         1
                 ));

@@ -5,7 +5,7 @@
  */
 package persistencialibros;
 
-import formularios.FrmAutor;
+import formularios.FrmPrincipal;
 
 /**
  *
@@ -18,8 +18,9 @@ public class PersistenciaBDLibros {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        FrmAutor frm = new FrmAutor();
+        FrmPrincipal frm = new FrmPrincipal();
         frm.setVisible(true);
+        frm.setLocationRelativeTo(null);
     }
     
 }

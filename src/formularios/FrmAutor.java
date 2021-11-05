@@ -53,7 +53,7 @@ public class FrmAutor extends javax.swing.JFrame {
         TfNombre = new javax.swing.JTextField();
         TfApellido = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Autores");
 
         jToolBar1.setRollover(true);
