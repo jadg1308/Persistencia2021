@@ -16,7 +16,7 @@ import modelos.Autor;
  *
  * @author POO IIS 2021
  */
-public class TablaAutor {
+public class DAutor {
     private ArrayList<Autor> lista;
     private final Conexion conexion = new Conexion();
     private Connection conn; // Gestiona la conexion.
@@ -25,7 +25,7 @@ public class TablaAutor {
     private PreparedStatement modificarRegistro;
     private PreparedStatement eliminarRegistro;
     
-    public TablaAutor(){
+    public DAutor(){
         try{
             conn = conexion.obtenerConexion();
             mostrarRegistros = conn.prepareStatement("Select * from Autor");

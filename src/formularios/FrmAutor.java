@@ -5,7 +5,7 @@
  */
 package formularios;
 
-import dao.TablaAutor;
+import dao.DAutor;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class FrmAutor extends javax.swing.JFrame {
 
-    TablaAutor tAutor = new TablaAutor();
+    DAutor tAutor = new DAutor();
     boolean esNuevo;
     int idAutor = 0;
     int posActual = 0;
